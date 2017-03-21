@@ -1,21 +1,33 @@
 <template>
   <div class="container">
-    <div class="login">
-      <h1 class="login-heading">
-        <strong>Welcome.</strong> Please login.</h1>
-      <form v-on:click.submit.prevent>
-        <input type="text"  name="email" placeholder="Email" required="required" class="input-txt" v-model.trim="email" />
-        <input type="password" name="password" placeholder="Password" required="required" class="input-txt"  v-model.trim="password"/>
-        <div class="login-footer">
-          <a href="#" class="lnk">
-            <span class="icon icon--min">ಠ╭╮ಠ</span>
-            I've forgotten something
-          </a>
-          <button type="submit" class="btn btn--right" v-on:click="onSubmit" >Sign in  </button>
-
+    <form class="form-horizontal" role="form" v-on:submit.prevent>
+      <div class="form-group">
+        <label for="email" class="col-sm-2 control-label">Email:</label>
+        <div class="col-sm-10">
+          <input type="email" class="form-control" id="email" placeholder="请输入Email" v-model="email">
         </div>
-      </form>
-    </div>
+      </div>
+      <div class="form-group">
+        <label for="password" class="col-sm-2 control-label">Password:</label>
+        <div class="col-sm-10">
+          <input type="password" class="form-control" id="passwrod" placeholder="请输入Password" v-model="password">
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+          <div class="checkbox">
+            <label>
+              <input type="checkbox">请记住我
+            </label>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+          <button type="submit" class="btn btn-primary" @click="onSubmit">登录</button>
+        </div>
+      </div>
+    </form>
   </div>
 </template>
 <script>
@@ -76,5 +88,5 @@
 </script>
 
 <style scoped>
-  @import "../assets/css/style.css";
+  /*@import "../assets/css/style.css";*/
 </style>

@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Hello from '@/components/Hello'
 import Login from '@/components/Login'
+import View from '@/components/View'
 import VueResource from 'vue-resource'
 Vue.use(VueResource)
 
@@ -19,7 +20,13 @@ const routes=[
     path:'/login',
     name:'Login',
     component:Login
-  }
+  },
+    {
+      path:'/view/:articleId',
+        name:View,
+        component:View
+
+    }
 ];
 const router=new Router({
   mode:'history',

@@ -1,21 +1,18 @@
 <template>
-  <div class="hello">
-    <h1>{{ msg }}</h1>
-    <h2>Essential Links</h2>
-    <ul>
-      <li><a href="https://vuejs.org" target="_blank">Core Docs</a></li>
-      <li><a href="https://forum.vuejs.org" target="_blank">Forum</a></li>
-      <li><a href="https://gitter.im/vuejs/vue" target="_blank">Gitter Chat</a></li>
-      <li><a href="https://twitter.com/vuejs" target="_blank">Twitter</a></li>
-      <br>
-      <li><a href="http://vuejs-templates.github.io/webpack/" target="_blank">Docs for This Template</a></li>
-    </ul>
-    <h2>Ecosystem</h2>
-    <ul>
-      <li><a href="http://router.vuejs.org/" target="_blank">vue-router</a></li>
-      <li><a href="http://vuex.vuejs.org/" target="_blank">vuex</a></li>
-      <li><a href="http://vue-loader.vuejs.org/" target="_blank">vue-loader</a></li>
-      <li><a href="https://github.com/vuejs/awesome-vue" target="_blank">awesome-vue</a></li>
+  <div class="container">
+    <div class="list-group" v-for="art in article">
+      <router-link :to="{ path: '/view', params: { articleId: art.id }}">
+      <h4 class="list-group-item-heading">
+        {{art.title}}
+      </h4>
+      </router-link>
+        <p class="list-group-item-text">
+          {{art.content}}
+        </p>
+
+    </div>
+    <ul class="paginate">
+     <button @click="next">next</button>
     </ul>
   </div>
 </template>
@@ -25,40 +22,63 @@ export default {
   name: 'hello',
   data () {
     return {
-      msg: 'Welcome to Your Vue.js App',
-      header:[
-          ''
-      ],
+        articles:[],
+        current_page:1,
+        pre_page:0,
+        next_page:0,
+        total_page:0,
+        per:10,
+        article:[],
+
     }
 
   },
-  created () {
-    this.$http.post('http://127.0.0.1/api/test')
-    .then(response=>{
-      console.log(response.body)
-    });
-}
+    methods:{
+      logout(){
+          window.localStorage.removeItem('user')
+          this.$router.push('/login')
+      },
+        next(){
+          this.current_page+=1
+            this.pre_page+=1
+        }
+    },
+    created(){
+      this.$http.get('http://127.0.0.1/api/get_all_articles')
+          .then(response=>{
+              this.articles=response.data
+              this.total_page=this.articles.length/this.per;
+              this.articles.forEach((e,index)=>{
+                  if(index<this.per){
+//                     console.log(e)
+
+                      this.article.push(e)
+//                      console.log(this.article)
+                  }
+              })
+          });
+//      console.log(this.$route.params.articleId)
+
+    },
+    watch:{
+        current_page(val){
+            this.article=[]
+            this.articles.forEach((e,index)=>{
+                if(index<this.current_page*this.per){
+                    if(index>this.pre_page*this.per){
+//                        console.log(e)
+
+                        this.article.push(e)
+                    }
+
+
+                }
+            })
+        }
+    }
+
 
 }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-h1, h2 {
-  font-weight: normal;
-}
-
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-
-a {
-  color: #42b983;
-}
-</style>
